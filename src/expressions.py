@@ -1,4 +1,5 @@
 import src.parse as parse
+from src.actions import CompoundStatement
 
 
 class MultExpr:
@@ -124,3 +125,15 @@ class BracketExpr:
     
     def evaluate(self, program_state):
         return self.inner.evaluate(program_state)
+
+
+class FunctionExpr:
+    def __init__(self, parameters, statements):
+        self.parameters = parameters
+        self.statements = CompoundStatement(statements)
+
+    def __repr__(self):
+        return f"FunctionExpr(parameters={self.parameters}, statements={self.statements})"
+
+    def evaluate(self, program_state, param_bindings):
+        return self.statements.evaluate(program_state, param_bindings)

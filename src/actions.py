@@ -69,3 +69,22 @@ class IfElseStatement:
     
     def __repr__(self):
         return f"IfElseStatement(? {self.expr} -> {self.if_statement} ! -> {self.else_statement})"
+
+
+class DefineFunctionAction:
+    def __init__(self, function_name, function_params, function_expr):
+        self.function_name = function_name
+        self.function_params = function_params
+        self.function_expr = parse.parse_expression(function_expr)
+    
+    def __repr__(self):
+        return f"DefineFunctionAction(name={self.function_name}, params={self.function_params}, expr={self.function_expr})"
+
+
+class InvokeFunctionAction:
+    def __init__(self, function_name, function_args):
+        self.function_name = function_name
+        self.function_args = function_args
+    
+    def __repr__(self):
+        return f"InvokeFunctionAction(name={self.function_name}, args={self.function_args})"

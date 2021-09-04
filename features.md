@@ -16,8 +16,8 @@
 
 ## To do
 
-- variable increment by arbitrary amount
 - functions
+- variable increment by arbitrary amount
 - floats
 - lists
 - stacks (with stack property enforced)

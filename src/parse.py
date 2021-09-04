@@ -1,6 +1,6 @@
 
 from src.expressions import VariableRefExpr, IntLiteralExpr, StringLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr, BracketExpr
-from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement
+from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement, DefineFunctionAction, InvokeFunctionAction
 from src.utils import is_variable, split_list
 
 
@@ -48,6 +48,18 @@ def parse_statement(statement):
     # Remove comments
     if '$' in statement:
         statement = statement[:statement.index('$')]
+
+    if len(statement) == 0:
+        return
+
+    if statement[0] == 'f':
+        print(statement)
+        arg_index_low, arg_index_high = statement.index('{'), statement.index('}')
+        expr_index_low = statement.index('->')
+        name = statement[1]
+        params = statement[arg_index_low+1:arg_index_high]
+        expr = statement[expr_index_low+1:]
+        return DefineFunctionAction(name, params, expr)
 
     if statement[0] == 'repeat':
         return RepeatAction(statement[2], statement[4:])

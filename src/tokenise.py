@@ -7,7 +7,7 @@ def tokenise(chars):
     letters = set(string.ascii_letters)
 
     nums = set(map(str, range(0, 10)))
-    symbol_chars = set([':', '=', ';', '-', '>', '-', '+', '*', '/', '|', '$', '>', '<', '?', '!', '"', '(', ')'])
+    symbol_chars = set([':', '=', ';', '-', '>', '-', '+', '*', '/', '|', '$', '>', '<', '?', '!', '"', '(', ')', '{', '}'])
 
     tokens = []
     current_token = []
