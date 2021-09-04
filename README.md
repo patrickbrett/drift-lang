@@ -20,7 +20,7 @@ repeat *z -> show x | show " bottles " + y + "\n" | x--
 show x | show " bottle " + y + "\n"
 ```
 
-This will output:
+This will output the following (the '5' is input by the user):
 
 ```
 How many bottles to start with? 5
