@@ -1,0 +1,5 @@
+x := 3 * 5
+y := 9
+repeat *3 -> y--
+repeat *y -> x++
+show x
