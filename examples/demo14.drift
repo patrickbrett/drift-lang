@@ -1,0 +1,4 @@
+f add { x; y } -> x + y - (44 / z)
+z := 4
+abc := add { 5; 72 + z * 2 } / 2
+show abc

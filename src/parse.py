@@ -20,10 +20,11 @@ def parse_expression(expr):
         arg_index_low, arg_index_high = expr.index('{'), expr.index('}')
         name = expr[arg_index_low - 1]
         args = split_list(expr[arg_index_low+1:arg_index_high], ';')
-        return InvokeFunctionExpr(name, args)
+        new_expr = expr[:arg_index_low - 1] + [InvokeFunctionExpr(name, args)] + expr[arg_index_high + 1:]
+        return parse_expression(new_expr)
 
     if len(expr) == 1:
-        if isinstance(expr[0], BracketExpr):
+        if isinstance(expr[0], BracketExpr) or isinstance(expr[0], InvokeFunctionExpr):
             return expr[0]
 
         if is_variable(expr[0]):
@@ -59,15 +60,6 @@ def parse_statement(statement):
     if len(statement) == 0:
         return
 
-    # defining functions
-    if statement[0] == 'f':
-        param_index_low, param_index_high = statement.index('{'), statement.index('}')
-        expr_index_low = statement.index('->')
-        name = statement[1]
-        params = flatten(split_list(statement[param_index_low+1:param_index_high], ';'))
-        expr = statement[expr_index_low+1:]
-        return DefineFunctionAction(name, params, expr)
-
     if statement[0] == 'repeat':
         return RepeatAction(statement[2], statement[4:])
 
@@ -81,6 +73,15 @@ def parse_statement(statement):
 
     if '|' in statement:
         return CompoundStatement(split_list(statement, '|'))
+
+    # defining functions
+    if statement[0] == 'f':
+        param_index_low, param_index_high = statement.index('{'), statement.index('}')
+        expr_index_low = statement.index('->')
+        name = statement[1]
+        params = flatten(split_list(statement[param_index_low+1:param_index_high], ';'))
+        expr = statement[expr_index_low+1:]
+        return DefineFunctionAction(name, params, expr)
 
     if statement[0] == 'show':
         return ShowAction(statement[1:])

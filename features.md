@@ -29,3 +29,8 @@
 - for loops
 - while
 - closures
+- multi line functions
+
+# Known issues
+
+If there are multiple nested brackets, then programs behave unexpectedly.
