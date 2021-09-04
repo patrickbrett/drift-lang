@@ -12,8 +12,8 @@ class MultExpr:
     def __repr__(self):
         return f"MultExpr({self.a} * {self.b})"
 
-    def evaluate(self, program_state):
-        return self.a.evaluate(program_state) * self.b.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        return self.a.evaluate(program_state, scoped_variables) * self.b.evaluate(program_state, scoped_variables)
 
 
 class AddExpr:
@@ -26,8 +26,8 @@ class AddExpr:
     def __repr__(self):
         return f"AddExpr({self.a} + {self.b})"
 
-    def evaluate(self, program_state):
-        return self.a.evaluate(program_state) + self.b.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        return self.a.evaluate(program_state, scoped_variables) + self.b.evaluate(program_state, scoped_variables)
 
 
 class SubExpr():
@@ -40,8 +40,8 @@ class SubExpr():
     def __repr__(self):
         return f"SubExpr({self.a} - {self.b})"
 
-    def evaluate(self, program_state):
-        return self.a.evaluate(program_state) - self.b.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        return self.a.evaluate(program_state, scoped_variables) - self.b.evaluate(program_state, scoped_variables)
 
 
 class DivExpr():
@@ -54,8 +54,8 @@ class DivExpr():
     def __repr__(self):
         return f"DivExpr({self.a} / {self.b})"
 
-    def evaluate(self, program_state):
-        return self.a.evaluate(program_state) // self.b.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        return self.a.evaluate(program_state, scoped_variables) // self.b.evaluate(program_state, scoped_variables)
 
 
 class VariableRefExpr:
@@ -65,8 +65,11 @@ class VariableRefExpr:
     def __repr__(self):
         return f"VariableRefExpr({self.var})"
 
-    def evaluate(self, program_state):
-        return program_state.variables[self.var]
+    def evaluate(self, program_state, scoped_variables={}):
+        if self.var in scoped_variables:
+            return scoped_variables[self.var]
+        else:
+            return program_state.global_variables[self.var]
 
 
 class IntLiteralExpr:
@@ -76,7 +79,7 @@ class IntLiteralExpr:
     def __repr__(self):
         return f"IntLiteralExpr({self.val})"
 
-    def evaluate(self, program_state):
+    def evaluate(self, program_state, scoped_variables={}):
         return self.val
 
 
@@ -87,7 +90,7 @@ class StringLiteralExpr:
     def __repr__(self):
         return f"StringLiteralExpr({self.val})"
 
-    def evaluate(self, program_state):
+    def evaluate(self, program_state, scoped_variables={}):
         return self.val
 
 
@@ -104,8 +107,8 @@ class CompExpr:
         return f"CompExpr({self.first} {self.comp} {self.second})"
 
 
-    def evaluate(self, program_state):
-        f, s  = self.first.evaluate(program_state), self.second.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        f, s  = self.first.evaluate(program_state, scoped_variables), self.second.evaluate(program_state, scoped_variables)
         if self.comp == '>':
             return f > s
         elif self.comp == '<':
@@ -123,17 +126,24 @@ class BracketExpr:
     def __repr__(self):
         return f"BracketExpr({self.inner})"
     
-    def evaluate(self, program_state):
-        return self.inner.evaluate(program_state)
+    def evaluate(self, program_state, scoped_variables={}):
+        return self.inner.evaluate(program_state, scoped_variables)
 
 
-class FunctionExpr:
-    def __init__(self, parameters, statements):
-        self.parameters = parameters
-        self.statements = CompoundStatement(statements)
-
+class InvokeFunctionExpr:
+    def __init__(self, function_name, function_args):
+        self.function_name = function_name
+        self.function_args = function_args
+    
     def __repr__(self):
-        return f"FunctionExpr(parameters={self.parameters}, statements={self.statements})"
+        return f"InvokeFunctionExpr(name={self.function_name}, args={self.function_args})"
 
-    def evaluate(self, program_state, param_bindings):
-        return self.statements.evaluate(program_state, param_bindings)
+    def evaluate(self, program_state, scoped_variables={}):
+        # TODO handle multiple levels of scoped variables
+        # perhaps just an array of dicts
+        # also, this *could* be stored in the program state, with a stack.
+
+        func = program_state.functions[self.function_name]
+        scoped_variables = { param: value for (param, value) in zip(func.params, self.function_args) }
+        print(scoped_variables)
+        return func.expr.evaluate(program_state, scoped_variables)

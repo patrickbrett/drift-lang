@@ -79,12 +79,3 @@ class DefineFunctionAction:
     
     def __repr__(self):
         return f"DefineFunctionAction(name={self.function_name}, params={self.function_params}, expr={self.function_expr})"
-
-
-class InvokeFunctionAction:
-    def __init__(self, function_name, function_args):
-        self.function_name = function_name
-        self.function_args = function_args
-    
-    def __repr__(self):
-        return f"InvokeFunctionAction(name={self.function_name}, args={self.function_args})"

@@ -28,3 +28,4 @@
 - logical expressions
 - for loops
 - while
+- closures
