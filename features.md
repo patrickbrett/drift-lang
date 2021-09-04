@@ -14,6 +14,7 @@
 - strings
 - brackets
 - logical comparisons (e.g. >=, < etc)
+- user input
 
 ## To do
 
@@ -31,7 +32,6 @@
 - while
 - closures
 - multi line functions
-- user input
 
 # Known issues
 
