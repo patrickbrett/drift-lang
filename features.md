@@ -13,3 +13,9 @@
 - brackets
 - functions
 - strings
+- lists
+- stacks (with stack property enforced)
+- queues (with queue property enforced)
+- custom classes
+- inheritance
+- first class functions
