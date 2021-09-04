@@ -9,7 +9,8 @@ def parse_expression(expr):
         expr = [expr]
 
     # if there are brackets, process them first
-    if '(' in expr:
+    if '(' in expr and ')' in expr:
+        # TODO this does not work properly with nested brackets
         bracket_start = expr.index('(')
         bracket_end = expr.index(')')
         new_expr = expr[:bracket_start] + [BracketExpr(expr[bracket_start+1 : bracket_end])] + expr[bracket_end+1:]

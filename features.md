@@ -35,4 +35,5 @@
 
 # Known issues
 
-If there are multiple nested brackets, then programs behave unexpectedly.
+- If there are multiple nested brackets, then programs behave unexpectedly.
+- Local scope is limited to a single function; there is no stack determining variable scope.
