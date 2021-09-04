@@ -144,7 +144,5 @@ class InvokeFunctionExpr:
         # also, this *could* be stored in the program state, with a stack.
 
         func = program_state.functions[self.function_name]
-        print('ff', func)
-        scoped_variables = { param: value for (param, value) in zip(func.params, self.function_args) }
-        print(scoped_variables)
+        scoped_variables = { param: value.evaluate(program_state) for (param, value) in zip(func.params, self.function_args) }
         return func.expr.evaluate(program_state, scoped_variables)

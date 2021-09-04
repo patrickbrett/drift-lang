@@ -48,7 +48,7 @@ def parse_expression(expr):
                     else:
                         return search_order[i](expr[:j], expr[j+1:])
 
-    print("couldnt parse expr", expr)
+    print("couldn't parse expr", expr)
 
 
 def parse_statement(statement):
