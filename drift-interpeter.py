@@ -1,7 +1,7 @@
-from lib.tokenise import tokenise
-from lib.parse import parse_statement
-from lib.process import process_statement
-from lib.utils import parse_args
+from src.tokenise import tokenise
+from src.parse import parse_statement
+from src.process import process_statement
+from src.utils import parse_args
 
 debug = True
 
