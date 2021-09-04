@@ -5,7 +5,7 @@ Very basic scripting language, built to experiment with custom interpreters
 ## To run
 
 ```
-python3 src/drift-interpeter.py -f examples/beer.drift
+python3 drift-interpeter.py -f examples/beer.drift
 ```
 
 ## Example program
