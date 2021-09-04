@@ -13,9 +13,11 @@
 - else
 - strings
 - brackets
+- logical comparisons (e.g. >=, < etc)
 
 ## To do
 
+- logical expression combinations (and, or etc)
 - functions
 - variable increment by arbitrary amount
 - floats
@@ -25,11 +27,11 @@
 - custom classes
 - inheritance
 - first class functions
-- logical expressions
 - for loops
 - while
 - closures
 - multi line functions
+- user input
 
 # Known issues
 

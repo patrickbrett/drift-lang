@@ -1,0 +1,5 @@
+x := 9
+y := "of beer on the wall!"
+z := x - 1
+repeat *z -> show x | show " bottles " + y + "\n" | x--
+show x | show " bottle " + y + "\n"

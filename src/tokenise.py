@@ -19,6 +19,8 @@ def tokenise(chars):
                 current_token.append(char)
                 tokens.append("".join(current_token))
                 current_token = []
+                i += 1
+                continue
             else:
                 current_token = [char]
                 i += 1
@@ -56,7 +58,7 @@ def tokenise(chars):
 
         i += 1
 
-    if current_token != ['"']:
+    if current_token != ['"'] and len(current_token):
         tokens.append("".join(current_token))
 
     return tokens

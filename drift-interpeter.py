@@ -9,6 +9,7 @@ debug = True
 def interpret(filename):
     with open(filename) as f:
         lines = f.read().split('\n')
+        lines = list(map(lambda x: x.replace('\\n', '\n'), lines))
 
     tokens = list(map(tokenise, lines[:-1]))
     parsed = list(map(parse_statement, tokens))

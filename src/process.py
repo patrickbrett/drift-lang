@@ -36,7 +36,7 @@ def process_statement(statement, program_state):
         program_state.global_variables[statement.var] += statement.expr.evaluate(program_state)
 
     elif isinstance(statement, ShowAction):
-        print("Program output:", statement.expr.evaluate(program_state))
+        print(statement.expr.evaluate(program_state), end='')
 
     elif isinstance(statement, CompoundStatement):
         for s in statement.statements:
