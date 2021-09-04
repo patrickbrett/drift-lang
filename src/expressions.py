@@ -81,7 +81,7 @@ class IntLiteralExpr:
 
 class StringLiteralExpr:
     def __init__(self, val):
-        self.val = val
+        self.val = val[1:-1] # strip quotes
 
     def __repr__(self):
         return f"StringLiteralExpr({self.val})"

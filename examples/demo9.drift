@@ -1,0 +1,3 @@
+msga := "Hello"
+msgb := " world!"
+show msga + msgb
