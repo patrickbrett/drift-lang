@@ -70,3 +70,4 @@ These are an important part of the intepretation process, and help to understand
 - I feel like it would be interesting to build a Python or JavaScript interpreter in Python or JavaScript, just for the fun of it. If Python is considered slow, what about Python interpreting Python interpreting JavaScript interpreting Python? 😈
 - Building an interpreter or compiler is an interesting pursuit in that *your test cases are programs!*
 - I like how the structure of dividing the program into expressions and statements naturally arose after encountering the same problem several times over.
+- Doing this in a language without support for classes seems like it would be much harder.
