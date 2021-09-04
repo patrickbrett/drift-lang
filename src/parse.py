@@ -1,6 +1,6 @@
 
 from src.expressions import VariableRefExpr, IntLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr
-from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfStatement, ElseStatement
+from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement
 from src.utils import is_variable, split_list
 
 
@@ -45,11 +45,11 @@ def parse_statement(statement):
 
     if statement[0] == '?':
         split = split_list(statement, '->')
-        return IfStatement(split[0][1:], split[1])
+        return IfIntermediate(split[0][1:], split[1])
 
     if statement[0] == '!':
         split = split_list(statement, '->')
-        return ElseStatement(split[1])
+        return ElseIntermediate(split[1])
 
     if '|' in statement:
         return CompoundStatement(split_list(statement, '|'))
@@ -69,3 +69,21 @@ def parse_statement(statement):
             return SetAction(statement[0], statement[2:])
 
     return statement
+
+
+"""
+Combine if/else and other compound statements
+"""
+def combine_statements(parsed):
+    new_statements = []
+    for i in range(len(parsed)):
+        curr = parsed[i]
+        if isinstance(curr, IfIntermediate):
+            continue
+        elif isinstance(curr, ElseIntermediate):
+            if i > 0 and isinstance(parsed[i-1], IfIntermediate):
+                new_statements.append(IfElseStatement(parsed[i-1], parsed[i]))
+        else:
+            new_statements.append(curr)
+
+    return new_statements

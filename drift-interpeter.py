@@ -1,17 +1,9 @@
 from src.tokenise import tokenise
-from src.parse import parse_statement
-from src.process import process_statement
+from src.parse import parse_statement, combine_statements
+from src.process import process_statement, ProgramState
 from src.utils import parse_args
 
 debug = True
-
-
-class ProgramState():
-    def __init__(self):
-        self.variables = {}
-    
-    def __repr__(self):
-        return f"ProgramState(vars={self.variables})"
 
 
 def interpret(filename):
@@ -20,6 +12,9 @@ def interpret(filename):
 
     tokens = list(map(tokenise, lines[:-1]))
     parsed = list(map(parse_statement, tokens))
+
+    # Combine multi-line statements such as if/else
+    parsed = combine_statements(parsed)
 
     program_state = ProgramState()
 

@@ -93,7 +93,7 @@ class CompExpr:
 
 
     def evaluate(self, program_state):
-        f, s  = self.first.evaluate(), self.second.evaluate()
+        f, s  = self.first.evaluate(program_state), self.second.evaluate(program_state)
         if self.comp == '>':
             return f > s
         elif self.comp == '<':
