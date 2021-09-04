@@ -3,6 +3,8 @@ from lib.parse import parse_statement
 from lib.process import process_statement
 from lib.utils import parse_args
 
+debug = True
+
 
 class ProgramState():
     def __init__(self):
@@ -12,21 +14,20 @@ class ProgramState():
         return f"ProgramState(vars={self.variables})"
 
 
-
-
 def interpret(filename):
     with open(filename) as f:
         lines = f.read().split('\n')
 
     tokens = list(map(tokenise, lines[:-1]))
-
-    program_state = ProgramState()
-    
     parsed = list(map(parse_statement, tokens))
 
-    print(tokens)
-    print(parsed)
-    print()
+    program_state = ProgramState()
+
+    global debug
+    if debug:
+        print(tokens)
+        print(parsed)
+        print()
 
     for statement in parsed:
         process_statement(statement, program_state)

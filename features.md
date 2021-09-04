@@ -6,10 +6,12 @@
 - variable increment
 - variable decrement
 - repeat (count = result of an expression)
+- compound expressions
+- addition, subtraction, multiplication, division
 
 ## To do
 
-- compound expressions
+- comments
 - brackets
 - functions
 - strings
@@ -19,3 +21,8 @@
 - custom classes
 - inheritance
 - first class functions
+- logical expressions
+- if
+- else
+- for loops
+- while
