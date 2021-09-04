@@ -24,4 +24,8 @@ show y - 400 $ print some more
 - `:=` assigns variables
 - `show` prints to the console
 - `|` allows multiple expressions on one line
-- `repeat *n ->` repeats the following expression n times
+- `repeat *n ->` repeats the following statement n times
+- `? expr ->` runs the following statement if `expr` evaluates to true
+- `! ->` runs the following statement if the directly preceding `?` evaluated to false
+- whitespace is largely ignored (though it naturally separates variables, etc)
+- all variables must be lowercase without underscores

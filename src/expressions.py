@@ -79,6 +79,10 @@ class IntLiteralExpr:
         return self.val
 
 
+class StringLiteralExpr:
+    def __init__(self, val):
+        self.val = val
+
 class CompExpr:
     chars = set(['>', '<', '>=', '<='])
 
