@@ -1,0 +1,5 @@
+y := 40
+x := 30
+repeat *3 -> y-- | x++
+? y > x -> show y $ if y is larger than x, show y
+!       -> show x $ otherwise, show x
