@@ -17,6 +17,9 @@ def parse_args():
 class ProgramState():
     def __init__(self):
         self.variables = {}
+    
+    def __repr__(self):
+        return f"ProgramState(vars={self.variables})"
 
 
 def tokenise(chars):
@@ -67,15 +70,10 @@ class Variable:
         self.name = name
 
 
-class Expression:
-    def __init__(self, expr):
-        self.expr = expr
-
-
 class SetAction:
     def __init__(self, var, expr):
         self.var = var
-        self.expr = expr
+        self.expr = parse_expression(expr)
     
     def __repr__(self):
         return f"SetAction({self.var} := {self.expr})"
@@ -83,8 +81,8 @@ class SetAction:
 
 class RepeatAction:
     def __init__(self, count, statement):
+        self.count = parse_expression(count)
         self.statement = statement
-        self.count = count
     
     def __repr__(self):
         return f"RepeatAction(*{self.count}, {self.statement})"
@@ -92,7 +90,7 @@ class RepeatAction:
 
 class ShowAction:
     def __init__(self, expr):
-        self.expr = expr
+        self.expr = parse_expression(expr)
     
     def __repr__(self):
         return f"ShowAction({self.expr})"
@@ -114,14 +112,30 @@ class Expression:
     def __repr__(self):
         return f"Expression({self.expr})"
 
+    def evaluate(self, program_state):
+        if isinstance(self.expr, MultExpr):
+            return self.expr.evaluate(program_state)
+        elif isinstance(self.expr, AddExpr):
+            return self.expr.evaluate(program_state)
+        elif isinstance(self.expr, VariableRefExpr):
+            return self.expr.evaluate(program_state)
+        else:
+            try:
+                return int(self.expr)
+            except:
+                return self.expr
+
 
 class MultExpr:
     def __init__(self, a, b):
-        self.a = a
-        self.b = b
+        self.a = parse_expression(a)
+        self.b = parse_expression(b)
 
     def __repr__(self):
         return f"MultExpr({self.a} * {self.b})"
+
+    def evaluate(self, program_state):
+        return self.a.evaluate(program_state) * self.b.evaluate(program_state)
 
 
 class AddExpr:
@@ -132,22 +146,53 @@ class AddExpr:
     def __repr__(self):
         return f"AddExpr({self.a} + {self.b})"
 
+    def evaluate(self, program_state):
+        return self.a.evaluate(program_state) + self.b.evaluate(program_state)
+
+
+class VariableRefExpr:
+    def __init__(self, var):
+        self.var = var
+
+    def __repr__(self):
+        return f"VariableRefExpr({self.var})"
+
+    def evaluate(self, program_state):
+        return program_state.variables[self.var]
+
+
+class IntLiteralExpr:
+    def __init__(self, val):
+        self.val = val
+
+    def __repr__(self):
+        return f"IntLiteralExpr({self.val})"
+
+    def evaluate(self, program_state):
+        return self.val
+
 
 def parse_expression(expr):
     if not isinstance(expr, list):
-        return expr
+        expr = [expr]
 
     if len(expr) == 1:
-        return expr[0]
+        if is_variable(expr[0]):
+            return VariableRefExpr(expr[0])
+        try:
+            int_val = int(expr[0])
+            return IntLiteralExpr(int_val)
+        except:
+            print("Couldn't match")
+            return expr[0]
     
     if len(expr) >= 3:
         if expr[1] == '*':
-            return MultExpr(Expression(expr[0]), Expression(expr[2:]))
+            return MultExpr(expr[0], expr[2:])
         elif expr[1] == '+':
-            return AddExpr(Expression(expr[0]), Expression(expr[2:]))
+            return AddExpr(expr[0], expr[2:])
 
-    return expr
-
+    print("couldnt parse expr", expr)
 
 def is_variable(token):
     lw = set(string.ascii_lowercase)
@@ -156,7 +201,7 @@ def is_variable(token):
 
 def parse_statement(statement):
     if statement[0] == 'show':
-        return ShowAction(Expression(statement[1:]))
+        return ShowAction(statement[1:])
 
     if statement[0] == 'repeat':
         return RepeatAction(statement[2], parse_statement(statement[4:]))
@@ -170,13 +215,22 @@ def parse_statement(statement):
 
     if len(statement) >= 3:
         if is_variable(statement[0]) and statement[1] == ':=':
-            return SetAction(statement[0], Expression(statement[2:]))
+            return SetAction(statement[0], statement[2:])
 
     return statement
 
 
 def process(statement, program_state):
-    pass
+    if isinstance(statement, SetAction):
+        program_state.variables[statement.var] = statement.expr.evaluate(program_state)
+    elif isinstance(statement, RepeatAction):
+        count = statement.count.evaluate(program_state)
+        for i in range(count):
+            process(statement.statement, program_state)
+    elif isinstance(statement, IncrAction):
+        program_state.variables[statement.var] += statement.expr.evaluate(program_state)
+    elif isinstance(statement, ShowAction):
+        print("Program output:", statement.expr.evaluate(program_state))
 
 
 def interpret(filename):
@@ -187,13 +241,15 @@ def interpret(filename):
 
     program_state = ProgramState()
     
-    parsed = map(parse_statement, tokens)
+    parsed = list(map(parse_statement, tokens))
 
-    # for statement in parsed:
-    #     process(statement, program_state)
+    print(tokens)
+    print(parsed)
+    print()
 
-    print(list(tokens))
-    print(list(parsed))
+    for statement in parsed:
+        process(statement, program_state)
+
 
 
 if __name__ == '__main__':
