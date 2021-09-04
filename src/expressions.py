@@ -113,3 +113,14 @@ class CompExpr:
             return f >= s
         elif self.comp == '<=':
             return f <= s
+
+
+class BracketExpr:
+    def __init__(self, inner):
+        self.inner = parse.parse_expression(inner)
+    
+    def __repr__(self):
+        return f"BracketExpr({self.inner})"
+    
+    def evaluate(self, program_state):
+        return self.inner.evaluate(program_state)

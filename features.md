@@ -12,10 +12,10 @@
 - if
 - else
 - strings
+- brackets
 
 ## To do
 
-- brackets
 - variable increment by arbitrary amount
 - functions
 - floats

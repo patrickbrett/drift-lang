@@ -1,14 +1,24 @@
 
-from src.expressions import VariableRefExpr, IntLiteralExpr, StringLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr
+from src.expressions import VariableRefExpr, IntLiteralExpr, StringLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr, BracketExpr
 from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement
 from src.utils import is_variable, split_list
 
 
 def parse_expression(expr):
+    # if there are brackets, process them first
+    if '(' in expr:
+        bracket_start = expr.index('(')
+        bracket_end = expr.index(')')
+        new_expr = expr[:bracket_start] + [BracketExpr(expr[bracket_start+1 : bracket_end])] + expr[bracket_end+1:]
+        return parse_expression(new_expr)
+
     if not isinstance(expr, list):
         expr = [expr]
 
     if len(expr) == 1:
+        if isinstance(expr[0], BracketExpr):
+            return expr[0]
+
         if is_variable(expr[0]):
             return VariableRefExpr(expr[0])
         try:
