@@ -1,0 +1,3 @@
+y := 10 $ set y to 10
+repeat *y -> show 3 * y - 4 / 2 | y-- $ decrement y and print some things
+show y - 400 $ print some more

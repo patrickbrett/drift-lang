@@ -8,13 +8,13 @@
 - repeat (count = result of an expression)
 - compound expressions
 - addition, subtraction, multiplication, division
+- comments
 
 ## To do
 
-- comments
+- strings
 - brackets
 - functions
-- strings
 - lists
 - stacks (with stack property enforced)
 - queues (with queue property enforced)
