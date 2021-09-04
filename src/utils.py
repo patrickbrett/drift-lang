@@ -15,8 +15,8 @@ def parse_args():
 
 
 def is_variable(token):
-    lw = set(string.ascii_lowercase)
-    return all(char in lw for char in token)
+    letters = set(string.ascii_letters)
+    return all(char in letters for char in token)
 
 
 def split_list(l, token):

@@ -3,22 +3,39 @@ import string
 
 def tokenise(chars):
     i = 0
-    lw = set(string.ascii_lowercase)
+
+    letters = set(string.ascii_letters)
+
     nums = set(map(str, range(0, 10)))
-    symbol_chars = set([':', '=', ';', '-', '>', '-', '+', '*', '/', '|', '$', '>', '<', '?', '!'])
+    symbol_chars = set([':', '=', ';', '-', '>', '-', '+', '*', '/', '|', '$', '>', '<', '?', '!', '"'])
     # symbols = set([':=', ';', '->', '--', '++', '*'])
 
     tokens = []
     current_token = []
     while i < len(chars):
         char = chars[i]
+
+        if char == '"':
+            if len(current_token):
+                current_token.append(char)
+                tokens.append("".join(current_token))
+                current_token = []
+            else:
+                current_token = [char]
+                i += 1
+                continue
+        elif len(current_token) and current_token[0] == '"':
+            current_token.append(char)
+            i += 1
+            continue
+
         if char == ' ':
             if any(t != " " for t in current_token):
                 tokens.append("".join(current_token))
                 current_token = []
 
-        if char in lw:
-            if not len(current_token) or current_token[-1] in lw:
+        if char in letters:
+            if not len(current_token) or current_token[-1] in letters:
                 current_token.append(char)
             else:
                 tokens.append("".join(current_token))
@@ -40,6 +57,7 @@ def tokenise(chars):
 
         i += 1
 
-    tokens.append("".join(current_token))
+    if current_token != ['"']:
+        tokens.append("".join(current_token))
 
     return tokens
