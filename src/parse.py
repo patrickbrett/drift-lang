@@ -1,5 +1,5 @@
 
-from src.expressions import VariableRefExpr, IntLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr
+from src.expressions import VariableRefExpr, IntLiteralExpr, StringLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr
 from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement
 from src.utils import is_variable, split_list
 
@@ -15,8 +15,7 @@ def parse_expression(expr):
             int_val = int(expr[0])
             return IntLiteralExpr(int_val)
         except:
-            print("Couldn't match")
-            return expr[0]
+            return StringLiteralExpr(expr[0])
     
     if len(expr) >= 3:
         search_order = [CompExpr, AddExpr, SubExpr, MultExpr, DivExpr]
