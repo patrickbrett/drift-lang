@@ -21,7 +21,10 @@ def interpret(filename):
 
     global debug
     if debug:
+        print("Tokens:")
         print(tokens)
+        print()
+        print("AST:")
         print(parsed)
         print()
 
