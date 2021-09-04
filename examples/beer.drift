@@ -1,4 +1,4 @@
-x := 9
+x := # { "How many bottles to start with? " }
 y := "of beer on the wall!"
 z := x - 1
 repeat *z -> show x | show " bottles " + y + "\n" | x--

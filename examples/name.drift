@@ -1,0 +1,2 @@
+x := @ { "What's your name? " }
+show x + "? That's a nice name!\n"

@@ -146,3 +146,18 @@ class InvokeFunctionExpr:
         func = program_state.functions[self.function_name]
         scoped_variables = { param: value.evaluate(program_state) for (param, value) in zip(func.params, self.function_args) }
         return func.expr.evaluate(program_state, scoped_variables)
+
+
+class UserInputExpr:
+    def __init__(self, to_int=False):
+        self.to_int = to_int
+
+    def __repr__(self):
+        return f"UserInputExpr(to_int={to_int})"
+
+    def evaluate(self, program_state, scoped_variables={}):
+        response = input(scoped_variables['prompt'])
+        if self.to_int:
+            return int(response)
+        else:
+            return response

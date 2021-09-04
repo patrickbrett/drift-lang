@@ -1,4 +1,5 @@
 from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfElseStatement, DefineFunctionAction
+from src.expressions import UserInputExpr
 
 
 class FunctionObject:
@@ -13,7 +14,10 @@ class FunctionObject:
 class ProgramState():
     def __init__(self):
         self.global_variables = {}
-        self.functions = {}
+        self.functions = {
+            '#': FunctionObject(['prompt'], UserInputExpr(to_int=True)),
+            '@': FunctionObject(['prompt'], UserInputExpr()),
+        }
     
     def __repr__(self):
         return f"ProgramState(global_variables={self.global_variables}, functions={self.functions}, scoped_variables={self.scoped_variables})"
