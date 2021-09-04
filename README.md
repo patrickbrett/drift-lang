@@ -13,7 +13,7 @@ python3 drift-interpeter.py -f examples/beer.drift
 See `beer.drift`
 
 ```
-x := 9
+x := # { "How many bottles to start with? " }
 y := "of beer on the wall!"
 z := x - 1
 repeat *z -> show x | show " bottles " + y + "\n" | x--
@@ -23,10 +23,7 @@ show x | show " bottle " + y + "\n"
 This will output:
 
 ```
-9 bottles of beer on the wall!
-8 bottles of beer on the wall!
-7 bottles of beer on the wall!
-6 bottles of beer on the wall!
+How many bottles to start with? 5
 5 bottles of beer on the wall!
 4 bottles of beer on the wall!
 3 bottles of beer on the wall!
@@ -38,10 +35,10 @@ Unless `debug` is disabled, it will also output the calculated tokens and AST:
 
 ```
 Tokens:
-[['x', ':=', '9'], ['y', ':=', '"of beer on the wall!"'], ['z', ':=', 'x', '-', '1'], ['repeat', '*', 'z', '->', 'show', 'x', '|', 'show', '" bottles "', '+', 'y', '+', '"\n"', '|', 'x', '--'], ['show', 'x', '|', 'show', '" bottle "', '+', 'y', '+', '"\n"']]
+[['x', ':=', '#', '{', '"How many bottles to start with? "', '}'], ['y', ':=', '"of beer on the wall!"'], ['z', ':=', 'x', '-', '1'], ['repeat', '*', 'z', '->', 'show', 'x', '|', 'show', '" bottles "', '+', 'y', '+', '"\n"', '|', 'x', '--'], ['show', 'x', '|', 'show', '" bottle "', '+', 'y', '+', '"\n"']]
 
 AST:
-[SetAction(x := IntLiteralExpr(9)), SetAction(y := StringLiteralExpr(of beer on the wall!)), SetAction(z := SubExpr(VariableRefExpr(x) - IntLiteralExpr(1))), RepeatAction(*VariableRefExpr(z), CompoundStatement([ShowAction(VariableRefExpr(x)), ShowAction(AddExpr(StringLiteralExpr( bottles ) + AddExpr(VariableRefExpr(y) + StringLiteralExpr(
+[SetAction(x := InvokeFunctionExpr(name=#, args=[StringLiteralExpr(How many bottles to start with? )])), SetAction(y := StringLiteralExpr(of beer on the wall!)), SetAction(z := SubExpr(VariableRefExpr(x) - IntLiteralExpr(1))), RepeatAction(*VariableRefExpr(z), CompoundStatement([ShowAction(VariableRefExpr(x)), ShowAction(AddExpr(StringLiteralExpr( bottles ) + AddExpr(VariableRefExpr(y) + StringLiteralExpr(
 )))), IncrAction(x += IntLiteralExpr(-1))])), CompoundStatement([ShowAction(VariableRefExpr(x)), ShowAction(AddExpr(StringLiteralExpr( bottle ) + AddExpr(VariableRefExpr(y) + StringLiteralExpr(
 ))))])]
 ```
@@ -59,9 +56,11 @@ These are an important part of the intepretation process, and help to understand
 - `! ->` runs the following statement if the directly preceding `?` evaluated to false
 - `f add { x; y } -> x + y` defines a function that adds two values
 - `add { 3; 4 }` calls this function with the arguments 3 and 4
+- `"hello"` is a string literal
+- `# { "Enter your age: " }` prompts the user for a number, which can be stored or used
+- `@ { "Enter your name: " }` prompts the user for a string, which can be stored or used
 - whitespace is largely ignored (though it naturally separates variables, etc)
 - all variables must be lowercase without underscores
-- `"hello"` is a string literal
 
 ## Takeaways from this project
 
