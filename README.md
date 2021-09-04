@@ -29,3 +29,4 @@ show y - 400 $ print some more
 - `! ->` runs the following statement if the directly preceding `?` evaluated to false
 - whitespace is largely ignored (though it naturally separates variables, etc)
 - all variables must be lowercase without underscores
+- use `"` for quotations

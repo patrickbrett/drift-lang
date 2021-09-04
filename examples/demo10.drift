@@ -1,0 +1,4 @@
+abc := 170
+def := abc / 4
+abc := 120 - abc * 2 + def
+show abc + def

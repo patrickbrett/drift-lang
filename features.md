@@ -3,19 +3,20 @@
 ## Implemented
 
 - variable assignment
-- variable increment
-- variable decrement
+- variable increment by one
+- variable decrement by one
 - repeat (count = result of an expression)
 - compound expressions
 - addition, subtraction, multiplication, division
 - comments
 - if
 - else
+- strings
 
 ## To do
 
-- strings
 - brackets
+- variable increment by arbitrary amount
 - functions
 - floats
 - lists
