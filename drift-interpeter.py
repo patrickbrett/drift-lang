@@ -127,6 +127,8 @@ class Expression:
 
 
 class MultExpr:
+    char = '*'
+
     def __init__(self, a, b):
         self.a = parse_expression(a)
         self.b = parse_expression(b)
@@ -139,9 +141,11 @@ class MultExpr:
 
 
 class AddExpr:
+    char = '+'
+    
     def __init__(self, a, b):
-        self.a = a
-        self.b = b
+        self.a = parse_expression(a)
+        self.b = parse_expression(b)
 
     def __repr__(self):
         return f"AddExpr({self.a} + {self.b})"
@@ -187,10 +191,14 @@ def parse_expression(expr):
             return expr[0]
     
     if len(expr) >= 3:
-        if expr[1] == '*':
-            return MultExpr(expr[0], expr[2:])
-        elif expr[1] == '+':
-            return AddExpr(expr[0], expr[2:])
+        search_order = [AddExpr, MultExpr]
+
+        for i in range(len(search_order)):
+            parse_container = search_order[i]
+            char = parse_container.char
+            if char in expr:
+                j = expr.index(char)
+                return search_order[i](expr[:j], expr[j+1:])
 
     print("couldnt parse expr", expr)
 
