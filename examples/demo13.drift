@@ -1,0 +1,3 @@
+f add { x; y } -> x + y
+abc := add { 5; 72 }
+show abc

@@ -1,10 +1,13 @@
 
 from src.expressions import VariableRefExpr, IntLiteralExpr, StringLiteralExpr, AddExpr, SubExpr, MultExpr, DivExpr, CompExpr, BracketExpr, InvokeFunctionExpr
 from src.actions import IncrAction, RepeatAction, SetAction, ShowAction, CompoundStatement, IfIntermediate, ElseIntermediate, IfElseStatement, DefineFunctionAction
-from src.utils import is_variable, split_list
+from src.utils import is_variable, split_list, flatten
 
 
 def parse_expression(expr):
+    if not isinstance(expr, list):
+        expr = [expr]
+
     # if there are brackets, process them first
     if '(' in expr:
         bracket_start = expr.index('(')
@@ -12,14 +15,11 @@ def parse_expression(expr):
         new_expr = expr[:bracket_start] + [BracketExpr(expr[bracket_start+1 : bracket_end])] + expr[bracket_end+1:]
         return parse_expression(new_expr)
 
-    if not isinstance(expr, list):
-        expr = [expr]
-
     # invoking functions
     if '{' in expr and '}' in expr:
         arg_index_low, arg_index_high = expr.index('{'), expr.index('}')
         name = expr[arg_index_low - 1]
-        args = expr[arg_index_low+1:arg_index_high]
+        args = split_list(expr[arg_index_low+1:arg_index_high], ';')
         return InvokeFunctionExpr(name, args)
 
     if len(expr) == 1:
@@ -64,7 +64,7 @@ def parse_statement(statement):
         param_index_low, param_index_high = statement.index('{'), statement.index('}')
         expr_index_low = statement.index('->')
         name = statement[1]
-        params = statement[param_index_low+1:param_index_high]
+        params = flatten(split_list(statement[param_index_low+1:param_index_high], ';'))
         expr = statement[expr_index_low+1:]
         return DefineFunctionAction(name, params, expr)
 

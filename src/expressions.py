@@ -133,7 +133,7 @@ class BracketExpr:
 class InvokeFunctionExpr:
     def __init__(self, function_name, function_args):
         self.function_name = function_name
-        self.function_args = function_args
+        self.function_args = list(map(parse.parse_expression, function_args))
     
     def __repr__(self):
         return f"InvokeFunctionExpr(name={self.function_name}, args={self.function_args})"
@@ -144,6 +144,7 @@ class InvokeFunctionExpr:
         # also, this *could* be stored in the program state, with a stack.
 
         func = program_state.functions[self.function_name]
+        print('ff', func)
         scoped_variables = { param: value for (param, value) in zip(func.params, self.function_args) }
         print(scoped_variables)
         return func.expr.evaluate(program_state, scoped_variables)
